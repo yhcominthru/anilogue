@@ -1,0 +1,569 @@
+html{
+    box-sizing: border-box;
+}*, *::after, *::before{box-sizing: inherit;}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+}
+
+/*
+# 🧠 CSS + Modal Study Notes (Consolidated)
+## 1️⃣ Global CSS Foundations (Baseline Setup)
+
+### Box Sizing (important for predictable layouts)
+
+```css
+html {
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+```
+
+* `box-sizing: border-box` → width/height **includes padding & border**
+* Prevents manual width math
+* Set on `html` as the **single source of truth**
+* `*` applies to all elements
+* `*::before` & `*::after` included because pseudo-elements are **generated layout boxes**
+* Inheritance is **property-defined, not selector-defined**
+
+---
+
+### Global Reset / Defaults
+
+```css
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+}
+```
+
+Purpose:
+
+* Remove browser default spacing
+* Ensure consistent typography
+* Reduce cross-browser quirks
+
+---
+
+## 2️⃣ Body as Layout Anchor
+
+```css
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: #222;
+  position: relative;
+}
+```
+
+### Why this works:
+
+* `display: flex` → enables `justify-content` & `align-items`
+* `min-height: 100vh` → body fills viewport height
+
+  * Needed for **vertical centering**
+  * `1vh = 1% of viewport height`
+* `position: relative` →
+
+  * allows absolutely positioned children to anchor to body
+  * e.g. `.btn-open { position: absolute; bottom: 150px; }`
+
+💡 **Flex + `min-height: 100vh` is a common centering pattern**, but only when centering relative to the screen is needed.
+
+---
+
+## 3️⃣ Modal Core Concept
+
+### What a modal is:
+
+* A floating UI layer
+* Removed from normal document flow
+* Shown above page content
+* Usually paired with an overlay
+
+---
+
+## 4️⃣ Modal Container Styling
+
+```css
+.modal {
+  position: absolute;
+  top: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 450px;
+  min-height: 250px;
+  padding: 1.3rem;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+}
+```
+
+### Why each part exists:
+
+* `position: absolute` → removes modal from normal flow
+* `top: 20%` → places modal slightly below top (UI choice)
+* `display: flex` → vertical stacking of modal content
+* `gap` → spacing between children
+* `border-radius` → visual polish
+
+📌 Alternative centering pattern (classic):
+
+```css
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+```
+
+---
+
+## 5️⃣ Modal Header (`.modal .flex`)
+
+```css
+.modal .flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+```
+
+Purpose:
+
+* Align close button and header content
+* `display: flex` always goes on the **parent**
+* `justify-content` spreads items horizontally
+* `align-items` aligns vertically
+
+---
+
+## 6️⃣ Buttons: Base + Variants Pattern
+
+### Base Button
+
+```css
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.4rem;
+  font-weight: 700;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+```
+
+* Base styling for all buttons
+* `inline-block` →
+
+  * participates in inline flow
+  * but behaves like a box (padding, width, height)
+
+---
+
+### Button Variants
+
+```css
+.btn-open {
+  position: absolute;
+  bottom: 150px;
+}
+```
+
+* Anchored relative to body
+* Used for layout placement
+
+```css
+.btn-close {
+  padding: 0.5rem 0.7rem;
+  background: #eee;
+  border-radius: 50%;
+  transform: translate(10px, -20px);
+}
+```
+
+* Circular close button
+* `transform: translate()` →
+
+  * visually nudges element
+  * does **not** affect layout flow
+  * good for micro-adjustments
+
+🧠 **Rule of thumb**
+
+> Position with layout properties. Adjust with transforms.
+
+---
+
+## 7️⃣ Overlay Layer
+
+```css
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 1;
+}
+```
+
+Why:
+
+* `position: fixed` → stays put during scroll
+* `inset: 0` → covers full viewport
+* `rgba` → dim background
+* `z-index` → layering control
+
+📌 Typical stack:
+
+* overlay → lower z-index
+* modal → higher z-index
+
+---
+
+## 8️⃣ Hiding & Showing Modal (Conceptual)
+
+```html
+<section class="modal hidden"></section>
+<div class="overlay hidden"></div>
+```
+
+* Multiple classes can exist on one element
+* `.hidden` toggled via JS
+* Common `.hidden` CSS:
+
+```css
+.hidden {
+  display: none;
+}
+```
+
+---
+
+## 9️⃣ Transform vs Position (Important Distinction)
+
+### `position`:
+
+* Defines **where the element lives**
+* Affects layout
+
+### `transform: translate()`:
+
+* Visually moves element
+* Does **not** affect layout
+* Best for:
+
+  * fine-tuning
+  * centering correction
+  * animations
+
+---
+
+## 🔒 Key Takeaways (Memorize These)
+
+* `display: flex` enables alignment on the parent
+* `min-height: 100vh` gives vertical centering context
+* Modals are **removed from normal flow**
+* Buttons use base + variant pattern
+* `position` places, `transform` nudges
+* Overlay = fixed + full screen
+* Inheritance is property-defined, not selector-defined
+
+---
+*/
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #222;
+  position: relative;
+  min-height: 100vh; 
+}
+
+h1, h2 {
+    text-align: center;
+    margin: 0.25rem 0;
+}
+
+#gallery img {
+    padding: 5px;
+    width: 100%; /*responsive gallery*/
+    max-width: 400px;  
+    height: 150px;
+    object-fit: cover;
+    border-radius: 1px;
+    background-color: rgb(6, 6, 6);
+} 
+
+/*
+- grid layout belongs to the container, instead of each image
+- avoid using max-width when repeat + auto-fill + minmax is applied
+- avoid centering a container when it's a gallery
+*/
+
+#gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px 10px; /*<row gap> <column gap>*/
+    width: 100%; /*responsive gallery*/
+    max-width: 900px;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.card{
+    padding: 5px;
+    margin: 5px;
+    border: 1px black;
+    box-shadow: 10px 5px 5px rgb(193, 191, 191);
+}
+
+/* 
+- div shape can be defined via row x column self defined classes
+- due to the need of nested, column within row, hence flexible display, wrap-tendency and etc. should be defined in row
+- then only column can react
+*/
+
+.topnav{
+    margin: auto;
+    padding: 20px;
+    border: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+/*
+grid-template-columns or ...-rows: self explanatory
+
+grid-template-columns: repeat(3, 20px [col-start]);
+EQUALS
+grid-template-columns: 20px [col-start] 20px [col-start] 20px [col-start];
+
+*/
+
+/*
+when do i consider in border-radius and top?
+
+.modal .flex target the flex tag within modal tag right?
+*/
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 450px;
+  padding: 1.3rem;
+  min-height: 250px;
+  position: absolute;
+  top: 20%;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  z-index: 2;
+}
+
+.hidden{
+    display: none;
+}
+
+.modal .flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal input {
+  padding: 0.7rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.9em;
+}
+
+.modal p {
+  font-size: 0.9rem;
+  color: #777;
+  margin: 0.4rem 0 0.2rem;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.4rem;
+  font-weight: 700;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1em;
+}
+
+/*readjust the placing later*/
+.btn-open {
+  position: absolute;
+  margin-top: 75px;
+  margin-left: 800px;
+}
+
+.btn-close {
+  transform: translate(10px, -20px);
+  padding: 0.5rem 0.7rem;
+  background: #eee;
+  border-radius: 50%;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 1;
+}
+
+/*----------------------------*/
+.container{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;     /* horizontal center of the whole section */
+    text-align: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+/*
+CSS study notes 13th Dec 2025
+
+Reminder: CSS = selector + declaration
+type, .class, #id selectors
+avoid too many ID selectors
+
+Box Model: the term used when discussing web design & layout
+- Box Model = Margin + Border + Padding + Content (Outside to Inside)
+- Padding & Margin are transparent
+- width & height properties are adjusting the CONTENT area
+- the total width and height of an element/tag are combined together.
+
+div {
+  width: 320px;
+  height: 50px;
+  padding: 10px;
+  border: 5px solid gray;
+  margin: 0;
+}
+
+width = 320 + 10x2 + 5x2 
+height = 50 + 10x2 + 5x2
+
+OR USE box-sizing: border-box;
+so that width = numberSet 
+(no need of any extra addition)
+
+html {
+    box-sizing: border-box;
+} *, *::before, *::after { box-sizing: inherit; }
+
+# done in the way above for...
+1. sourceable rule origin
+2. enables scoped overrides
+3. better control
+4. inheritance is property-defined, not selector-defined.
+Most layout & box properties do NOT inherit
+
+::before and ::after are pseudo-elements = generated, invisible layout boxes
+not targeted by the universal selector itself
+
+----------------------------------------------
+
+Block x Inline
+- Block → claims a full horizontal slice of the page (layout containers)
+- Inline → flows inside a line of text (text-level styling)
+- Inline elements share the same line under an inline tag
+- inline-block is for things that should behave like text, but look like boxes.
+
+Imagine this sentence:
+Click [Subscribe] to continue.
+
+That button:
+Should not break the line
+Should have padding
+Should not overlap text
+That is exactly what inline-block is for.
+----------------------------------------------
+
+When to use display & General Settings
+- alignment, spacing, stacks doesn't work as expected
+- can be used out of habit if needed
+- display: flex/grid, text-level = inline, padded inline = inline-block, default as block element
+- regarding display: inline-block...
+    enables the display element participate in inline flow while behaving like a block box.
+
+
+----------------------------------------------
+
+Outer x Inner Display <display>
+- <display> inheritantly sets the behaviour of this tag amongst...
+    1. same level of tags (outer display, sibilings)
+    2. lower level of tags (inner display, children)
+
+    display: flex; = “I’m a block-level box, but my children are flex items.”
+
+    sample:
+    .container {
+        display: flex;
+    }
+
+----------------------------------------------
+
+-> * in CSS means select every element
+
+-> In CSS, an element is:
+Any node in the DOM that CSS can style
+
+Includes:
+HTML elements: div, p, img, span, body, html
+Pseudo-elements: ::before, ::after
+
+----------------------------------------------
+
+repeat(), auto-fill, auto-fit, minmax, flex-start, object-fit:cover....
+
+
+
+----------------------------------------------
+
+Responsive Web Design (idk when but this is a topic I need to study)
+https://codepen.io/kevinpowell/pen/vYvEdWG
+and more... (google, chatgpt)
+
+----------------------------------------------
+
+
+*/

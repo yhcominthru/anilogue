@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Anilogue</title>
+        <link rel="stylesheet" href = "style.css">
+        <script src="./script.js" defer></script>
+        <!--Lessons
+        1. use relative path with "./"
+        2. for css: <link rel="..." href = "...">
+        3. for js: <script src="..." defer></script>
+        
+        2 & 3 DIFFER in tagName, attribute sets (rel & href) (src & defer)
+        -->
+
+    </head>
+
+    <body> 
+        <div class = "container">
+            <div>
+                <h1>Welcome to Anilogue!</h1>
+                <h2>(insert Anilogue's description later)</h2>
+            </div>
+            
+            <!--regarding the form tag...
+            
+            action and method attribute becomes irrelevant as it's the JS that
+            handles stuff like DOM
+            
+            -->
+            <form id="searchForm" class="topnav">
+                <!--br tag = break 
+                take note that the fill in "text" and "submit" button are 2 diff. input tags
+                -->
+                <label for="character">Character Name:</label>
+                <input type="text" id="character" name="character" placeholder="Search characters...">
+                <input type="submit" value="Submit">
+            </form>
+
+            <!--modal practice, integrate upon image clicking later
+
+            Notes...
+            1. "modal hidden" are 2 classes
+            2. hidden is used as target to hide the modal via CSS
+            3. wait, was it ID or class that's self-defined? only ID or both?
+            4. make it a habit to chain input + button (class = "btn")
+            -->
+            <section class = "modal hidden">
+                <div class = "flex">
+                    <button class="btn-close">⨉</button>
+                </div>
+                <div>
+                    <h3 id="modalTitle"></h3>
+                    <img id="modalImg" alt="">
+                </div>
+
+                <input type="text" placeholder="Type whatever in here for now.">
+                <button class = "btn">Submit</button>
+            </section>
+
+            <div class = "overlay hidden"></div>
+            <button class="btn btn-open">Open Modal</button>
+
+            <!--empty container for later injection in js-->
+            <div id="gallery"></div>
+
+            <!--static grid-->
+            <!--<div class = "row">
+                <div class = "column">
+                    <img src = "C:\Users\james\OneDrive\Desktop\anilogue\images\ado2.jpg" alt= "imageUnavailable">
+                    <img src = "C:\Users\james\OneDrive\Desktop\anilogue\images\ado2.jpg" alt= "imageUnavailable">
+                    <img src = "C:\Users\james\OneDrive\Desktop\anilogue\images\ado2.jpg" alt= "imageUnavailable">
+                    <img src = "C:\Users\james\OneDrive\Desktop\anilogue\images\ado2.jpg" alt= "imageUnavailable">
+                    <img src = "C:\Users\james\OneDrive\Desktop\anilogue\images\ado2.jpg" alt= "imageUnavailable">
+                </div>
+
+                <div class = "column">
+                    <img src = "C:\Users\james\OneDrive\Desktop\anilogue\images\anyapeanuts.jpg" alt= "imageUnavailable">
+                    <img src = "C:\Users\james\OneDrive\Desktop\anilogue\images\anyapeanuts.jpg" alt= "imageUnavailable">
+                    <img src = "C:\Users\james\OneDrive\Desktop\anilogue\images\anyapeanuts.jpg" alt= "imageUnavailable">
+                    <img src = "C:\Users\james\OneDrive\Desktop\anilogue\images\anyapeanuts.jpg" alt= "imageUnavailable">
+                    <img src = "C:\Users\james\OneDrive\Desktop\anilogue\images\anyapeanuts.jpg" alt= "imageUnavailable">
+                </div>
+            </div>-->
+        </div>    
+        
+    </body>
+</html>    
