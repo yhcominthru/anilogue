@@ -7,8 +7,8 @@ let grid = document.getElementById("gallery");
 let currentCharacters = [];
 let currentQuery ="";
 let currentPage = 1;
-const prevBtn = document.querySelector('[data-action:"prev"]');
-const nextBtn = document.querySelector('[data-action:"next"]');
+const prevBtn = document.querySelector('[data-action="prev"]');
+const nextBtn = document.querySelector(`[data-action="next"]`);
 const modal = document.querySelector(".modal");
 const overlay = document.querySelector(".overlay");
 const closeModalBtn = document.querySelector(".btn-close");
@@ -51,17 +51,25 @@ const closeModal = function(){
 }
 
 
-async function showCharacter(query, page, limit) {
+async function showCharacter(query = "", page = 1, limit = 12) {
   try{
-    const url = `${JIKAN}/characters?page=1&limit=12`;
+    let url = `${JIKAN}/characters?page=${page}&limit=${limit}`;
+
+    // Add search query parameter if user searched for something
+    if (query && query.trim() !== "") {
+      url += `&q=${encodeURIComponent(query)}`;
+    }
     const response = await fetch(url);
     const data = await response.json();
 
     console.log(data);
     console.log(data.data);        // array
+    
+    if(query == ""){
     console.log(data.data[0]);     // first character object
     console.log(data.data[0].name);
     console.log(data.data[0].images.jpg.image_url);
+    }
 
     return data.data;
   } catch (error){
@@ -71,7 +79,7 @@ async function showCharacter(query, page, limit) {
 }
 
 async function updateGrid(){
-  let data = await showCharacter();
+  let data = await showCharacter(currentQuery, currentPage, 12);
   currentCharacters = data;
   //clear the container
   grid.innerHTML = "";
@@ -116,10 +124,12 @@ form.addEventListener("submit",submitForm);
 
 prevBtn.addEventListener("click", (e)=>{
   currentPage -=1;
+  updateGrid();
 })
 
 nextBtn.addEventListener("click", (e)=>{
   currentPage +=1;
+  updateGrid();
 })
 /*
 to ensure correct event listening from grid (the gallery)
