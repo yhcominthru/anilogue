@@ -5,6 +5,10 @@ const JIKAN = "https://api.jikan.moe/v4";
 //DOM nodes
 let grid = document.getElementById("gallery");
 let currentCharacters = [];
+let currentQuery ="";
+let currentPage = 1;
+const prevBtn = document.querySelector('[data-action:"prev"]');
+const nextBtn = document.querySelector('[data-action:"next"]');
 const modal = document.querySelector(".modal");
 const overlay = document.querySelector(".overlay");
 const closeModalBtn = document.querySelector(".btn-close");
@@ -18,8 +22,6 @@ document.addEventListener("keydown", function(e){
   }
 });
 
-
-
 //as display of .hidden is set to none within style.css
 // one modal, update image and title via tag IDs
 function openModal(entry){
@@ -28,6 +30,19 @@ function openModal(entry){
 
   modalTitle.textContent = entry.name;
   modalImg.src = entry.images.jpg.image_url;
+}
+
+function submitForm(event){
+    event.preventDefault();
+    const formData = new FormData(form);
+
+    currentQuery = formData.get("character");
+    currentPage = 1;
+    console.log("Query: ", currentQuery);
+
+    /*I need to update my updateGrid function for this sequence to work*/
+    updateGrid();
+    form.reset();
 }
 
 const closeModal = function(){
@@ -78,7 +93,9 @@ updateGrid();
 
 //use the defined function to update class status upon event
 closeModalBtn.addEventListener("click", closeModal);
+
 overlay.addEventListener("click", closeModal);
+
 grid.addEventListener("click", (e)=>{
   /*
   .card, a DOM element, doesn't expose data directly, 
@@ -95,6 +112,15 @@ grid.addEventListener("click", (e)=>{
   openModal(entry);
 });
 
+form.addEventListener("submit",submitForm);
+
+prevBtn.addEventListener("click", (e)=>{
+  currentPage -=1;
+})
+
+nextBtn.addEventListener("click", (e)=>{
+  currentPage +=1;
+})
 /*
 to ensure correct event listening from grid (the gallery)
 read and comprehend 
@@ -125,7 +151,6 @@ showCharacter().then(result=>console.log(`Result: ${result}`))
                     <img src = "C:\Users\james\OneDrive\Desktop\anilogue\images\anyapeanuts.jpg" alt= "imageUnavailable">
                     <img src = "C:\Users\james\OneDrive\Desktop\anilogue\images\anyapeanuts.jpg" alt= "imageUnavailable">
                 </div>*/
-
 
 /*
 Misc. Notes about DOM Selector & innerHTML

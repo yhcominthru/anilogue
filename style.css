@@ -419,6 +419,13 @@ button {
   font-size: 1em;
 }
 
+.btn-secondary{
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  background-color: #777;
+  color:black;
+}
+
 /*readjust the placing later*/
 .btn-open {
   position: absolute;
