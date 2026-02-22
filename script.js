@@ -4,6 +4,7 @@ const JIKAN = "https://api.jikan.moe/v4";
 //if id, getElementById & idName
 //DOM nodes
 let grid = document.getElementById("gallery");
+let sitePage = document.getElementById("pageNum");
 let currentCharacters = [];
 let currentQuery ="";
 let currentPage = 1;
@@ -38,6 +39,7 @@ function submitForm(event){
 
     currentQuery = formData.get("character");
     currentPage = 1;
+    sitePage = currentPage;
     console.log("Query: ", currentQuery);
 
     /*I need to update my updateGrid function for this sequence to work*/
@@ -81,6 +83,7 @@ async function showCharacter(query = "", page = 1, limit = 12) {
 async function updateGrid(){
   let data = await showCharacter(currentQuery, currentPage, 12);
   currentCharacters = data;
+  sitePage.textContent = currentPage;
   //clear the container
   grid.innerHTML = "";
 
@@ -123,8 +126,10 @@ grid.addEventListener("click", (e)=>{
 form.addEventListener("submit",submitForm);
 
 prevBtn.addEventListener("click", (e)=>{
-  currentPage -=1;
-  updateGrid();
+  if (currentPage > 1){
+    currentPage -=1;
+    updateGrid();
+  }
 })
 
 nextBtn.addEventListener("click", (e)=>{
