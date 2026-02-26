@@ -8,6 +8,7 @@ let sitePage = document.getElementById("pageNum");
 let currentCharacters = [];
 let currentQuery ="";
 let currentPage = 1;
+const actionContainer = document.getElementById("btn-container");
 const prevBtn = document.querySelector('[data-action="prev"]');
 const nextBtn = document.querySelector(`[data-action="next"]`);
 const modal = document.querySelector(".modal");
@@ -39,7 +40,7 @@ function submitForm(event){
 
     currentQuery = formData.get("character");
     currentPage = 1;
-    sitePage = currentPage;
+    sitePage.textContent = currentPage;
     console.log("Query: ", currentQuery);
 
     /*I need to update my updateGrid function for this sequence to work*/
@@ -125,17 +126,37 @@ grid.addEventListener("click", (e)=>{
 
 form.addEventListener("submit",submitForm);
 
-prevBtn.addEventListener("click", (e)=>{
+/*prevBtn.addEventListener("click", (e)=>{
   if (currentPage > 1){
     currentPage -=1;
     updateGrid();
   }
-})
+})                      
 
 nextBtn.addEventListener("click", (e)=>{
   currentPage +=1;
   updateGrid();
-})
+})*/
+
+actionContainer.addEventListener("click", function(e){
+  const clickedElement = e.target;
+    if (clickedElement.tagName === 'BUTTON' && clickedElement.dataset.action) {
+      const action = clickedElement.dataset.action;
+      switch(action){
+        case 'prev':
+          if (currentPage > 1){
+            currentPage -=1;
+            updateGrid();
+          }
+          break;
+        case 'next':
+          currentPage +=1;
+          updateGrid();  
+          break;
+        default:
+          console.log('Unknown Action');
+      }
+}});
 /*
 to ensure correct event listening from grid (the gallery)
 read and comprehend 
